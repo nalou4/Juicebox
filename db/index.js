@@ -20,7 +20,7 @@ async function createUser({ username, password }) {
         RETURNING *;
         `, [username, password]);
 
-        return result
+        return rows;
     } catch (error) {
         throw error;
     }
