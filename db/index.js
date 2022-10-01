@@ -312,7 +312,7 @@ async function getPostsByTagName(tagName) {
         JOIN post_tags ON posts.id=post_tags."postId"
         JOIN tags ON tags.id=post_tags."tagId"
         WHERE tags.name=$1;
-      `, [tagName]);
+        `, [tagName]);
 
         return await Promise.all(postIds.map(
             post => getPostById(post.id)
@@ -338,6 +338,21 @@ async function getAllTags() {
 }
 
 
+async function getUserByUsername(username) {
+    try {
+        const { rows: [user] } = await client.query(`
+        SELECT *
+        FROM users
+        WHERE username=$1;
+        `, [username]);
+
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 
 module.exports = {
     client,
@@ -352,6 +367,7 @@ module.exports = {
     createTags,
     addTagsToPost,
     getPostsByTagName,
-    getAllTags
-
+    getAllTags,
+    getUserByUsername
+    
 }
